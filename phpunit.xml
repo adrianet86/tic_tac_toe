@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.2/phpunit.xsd"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         bootstrap="vendor/autoload.php"
+         forceCoversAnnotation="false"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         stopOnRisky="false"
+         syntaxCheck="false"
+>
+    <php>
+        <ini name="error_reporting" value="E_ALL"/>
+        <env name="APP_ENV" value="testing"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="Project Unit Test Suite">
+            <directory suffix="Test.php">tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+        </whitelist>
+    </filter>
+</phpunit>
