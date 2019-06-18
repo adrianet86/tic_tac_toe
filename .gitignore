@@ -1,4 +1,4 @@
 /vendor/
-/.idea/
-/var/file_repositories
-!var/file_repositories/.gitkeep
+/.idea/*
+!/var/file_repositories/.gitkeep
+/var/file_repositories/*
