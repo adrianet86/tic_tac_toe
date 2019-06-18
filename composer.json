@@ -6,6 +6,7 @@
       "": "src/"
     },
     "classmap": [
+      "src/Kernel.php"
     ]
   },
   "autoload-dev": {

@@ -12,12 +12,12 @@ interface UserRepository
      * @param string $userId
      * @throws UserNotFoundException
      */
-    public function deleteById(string $userId);
+    public function deleteById(string $userId): void;
 
     /**
-     * @param string $firstUserId
+     * @param string $userId
      * @return User
      * @throws UserNotFoundException
      */
-    public function byId(string $firstUserId): User;
+    public function byId(string $userId): User;
 }
