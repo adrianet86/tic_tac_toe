@@ -4,7 +4,7 @@
 namespace TicTacToe\Application\Service\Game;
 
 
-class StartGameBetweenTwoPlayersRequest
+class StartGameBetweenTwoUsersRequest
 {
     private string $firstUserId;
     private string $secondUserId;

@@ -9,19 +9,19 @@ use TicTacToe\Domain\User\User;
 
 class Game
 {
-    const MINIM_PLAYERS = 2;
+    const MINIM_USERS = 2;
 
     private string $id;
-    private array $players;
-    private int $totalPlayers;
+    private array $users;
+    private int $totalUsers;
     private bool $isFinished;
     private ?User $winner;
 
     private function __construct()
     {
         $this->id = Uuid::uuid4()->toString();
-        $this->players = [];
-        $this->totalPlayers = 0;
+        $this->users = [];
+        $this->totalUsers = 0;
         $this->isFinished = false;
         $this->winner = null;
     }
@@ -41,27 +41,27 @@ class Game
         $self = new self();
 
         foreach ($users as $user) {
-            $self->players[$user->id()] = $user;
-            $self->totalPlayers++;
+            $self->users[$user->id()] = $user;
+            $self->totalUsers++;
         }
 
-        $self->assertMinimPlayers();
+        $self->assertMinimUsers();
 
         return $self;
     }
 
-    public function totalPlayers(): int
+    public function totalUsers(): int
     {
-        return $this->totalPlayers;
+        return $this->totalUsers;
     }
 
     /**
      * @throws GameRequiresMoreUsersException
      */
-    private function assertMinimPlayers(): void
+    private function assertMinimUsers(): void
     {
-        if ($this->totalPlayers < self::MINIM_PLAYERS) {
-            throw new GameRequiresMoreUsersException("GAME REQUIRES " . self::MINIM_PLAYERS);
+        if ($this->totalUsers < self::MINIM_USERS) {
+            throw new GameRequiresMoreUsersException("GAME REQUIRES " . self::MINIM_USERS);
         }
 
         return;
@@ -73,15 +73,15 @@ class Game
     }
 
     /**
-     * @param User $player
+     * @param string $userId
      * @param Movement $movement
      * @return bool
      * @throws GameIsFinishedException
      */
-    public function playerMoves(User $player, Movement $movement): bool
+    public function userMoves(string $userId, Movement $movement): bool
     {
         $this->assertIsNotFinished();
-        $this->assertUserIsAPlayer($player);
+        $this->assertUserIsAUser($userId);
 
         # TODO: something here I guess :p
 
@@ -89,11 +89,11 @@ class Game
     }
 
     /**
-     * @param User $user
+     * @param string $userId
      */
-    private function assertUserIsAPlayer(User $user): void
+    private function assertUserIsAUser(string $userId): void
     {
-        if (isset($this->players[$user->id()])) {
+        if (isset($this->users[$userId])) {
             return;
         }
 

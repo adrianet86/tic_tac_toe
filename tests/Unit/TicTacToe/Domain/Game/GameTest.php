@@ -18,7 +18,7 @@ class GameTest extends \PHPUnit\Framework\TestCase
         $game = Game::start($user1, $user2);
 
         $this->assertInstanceOf(Game::class, $game);
-        $this->assertEquals(2, $game->totalPlayers());
+        $this->assertEquals(2, $game->totalUsers());
     }
 
     public function testWhenAGameIsStartedAValidUuidAsIdIsCreated()
@@ -40,14 +40,14 @@ class GameTest extends \PHPUnit\Framework\TestCase
         Game::start($user1);
     }
 
-    public function testPlayerMakesAMovement()
+    public function testUserMakesAMovement()
     {
         $user1 = User::create('user1');
         $user2 = User::create('user2');
 
         $game = Game::start($user1, $user2);
 
-        $this->assertTrue($game->playerMoves($user1, new Movement()));
+        $this->assertTrue($game->userMoves($user1->id(), new Movement('right')));
     }
 
     public function testGameThrowsAnExceptionIfUserIsNotInPlaying()
@@ -58,7 +58,7 @@ class GameTest extends \PHPUnit\Framework\TestCase
         $game = Game::start($user1, $user2);
 
         $this->expectException(UserNotPlayingException::class);
-        $game->playerMoves(User::create('user3'), new Movement());
+        $game->userMoves('fake_id', new Movement('right'));
     }
 
     public function testGameThrowsAnExceptionItIsFinished()
@@ -71,7 +71,7 @@ class GameTest extends \PHPUnit\Framework\TestCase
         $game->end();
 
         $this->expectException(GameIsFinishedException::class);
-        $game->playerMoves($user1, new Movement());
+        $game->userMoves($user1->id(), new Movement('left'));
     }
 
     public function testGameStartedHasNotAWinner()
