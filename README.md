@@ -14,7 +14,7 @@
         docker run --rm -ti -v $PWD:/opt/project -w /opt/project composer install --ignore-platform-reqs
         
 
-#### Tests
+### Tests
         
         docker run --rm -ti -v $PWD:/opt/project -w /opt/project devilbox/php-fpm-7.4 php vendor/bin/phpunit -c phpunit.xml
 
@@ -29,7 +29,7 @@ Delete user
         docker run --rm -ti -v $PWD:/opt/project -w /opt/project  devilbox/php-fpm-7.4 php bin/delete_user.php <user_id>
 
 
-#### Maintenance
+### Maintenance
 
 Delete storage files
         
