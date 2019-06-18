@@ -13,4 +13,11 @@ interface UserRepository
      * @throws UserNotFoundException
      */
     public function deleteById(string $userId);
+
+    /**
+     * @param string $firstUserId
+     * @return User
+     * @throws UserNotFoundException
+     */
+    public function byId(string $firstUserId): User;
 }
