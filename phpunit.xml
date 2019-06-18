@@ -16,7 +16,6 @@
          stopOnIncomplete="false"
          stopOnSkipped="false"
          stopOnRisky="false"
-         syntaxCheck="false"
 >
     <php>
         <ini name="error_reporting" value="E_ALL"/>
