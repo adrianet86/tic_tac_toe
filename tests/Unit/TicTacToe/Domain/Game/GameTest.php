@@ -73,4 +73,11 @@ class GameTest extends \PHPUnit\Framework\TestCase
         $this->expectException(GameIsFinishedException::class);
         $game->playerMoves($user1, new Movement());
     }
+
+    public function testGameStartedHasNotAWinner()
+    {
+        $game = Game::start(User::create('user1'), User::create('user2'));
+
+        $this->assertNull($game->winner());
+    }
 }

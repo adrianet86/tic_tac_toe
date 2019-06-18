@@ -15,6 +15,7 @@ class Game
     private array $players;
     private int $totalPlayers;
     private bool $isFinished;
+    private ?User $winner;
 
     private function __construct()
     {
@@ -22,6 +23,7 @@ class Game
         $this->players = [];
         $this->totalPlayers = 0;
         $this->isFinished = false;
+        $this->winner = null;
     }
 
     public function id(): string
@@ -110,6 +112,11 @@ class Game
         }
 
         return;
+    }
+
+    public function winner(): ?User
+    {
+        return $this->winner;
     }
 
 }
