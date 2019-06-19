@@ -52,7 +52,7 @@ class FileUserRepository implements UserRepository
             return;
         }
 
-        throw new UserNotFoundException('USER NOT FOUND' . $userId);
+        throw new UserNotFoundException('USER NOT FOUND: ' . $userId);
     }
 
     /**
