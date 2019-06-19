@@ -83,7 +83,9 @@ class Game
         $this->assertIsNotFinished();
         $this->assertUserIsAUser($userId);
 
-        # TODO: something here I guess :p
+        if (rand(0, 5) % 2 == 0) {
+            $this->setWinner($userId);
+        }
 
         return true;
     }
@@ -100,11 +102,6 @@ class Game
         throw new UserNotPlayingException('USER IS NOT PLAYING THIS GAME');
     }
 
-    public function end(): void
-    {
-        $this->isFinished = true;
-    }
-
     private function assertIsNotFinished(): void
     {
         if ($this->isFinished) {
@@ -119,4 +116,9 @@ class Game
         return $this->winner;
     }
 
+    private function setWinner(string $userId)
+    {
+        $this->winner = $this->users[$userId];
+        $this->isFinished = true;
+    }
 }

@@ -12,10 +12,7 @@ class GameTest extends \PHPUnit\Framework\TestCase
 {
     public function testGameIsStartedBetweenTwoUsers()
     {
-        $user1 = User::create('user1');
-        $user2 = User::create('user2');
-
-        $game = Game::start($user1, $user2);
+        $game = Game::start(User::create('user1'), User::create('user2'));
 
         $this->assertInstanceOf(Game::class, $game);
         $this->assertEquals(2, $game->totalUsers());
@@ -43,35 +40,18 @@ class GameTest extends \PHPUnit\Framework\TestCase
     public function testUserMakesAMovement()
     {
         $user1 = User::create('user1');
-        $user2 = User::create('user2');
 
-        $game = Game::start($user1, $user2);
+        $game = Game::start($user1, User::create('user2'));
 
         $this->assertTrue($game->userMoves($user1->id(), new Movement('right')));
     }
 
     public function testGameThrowsAnExceptionIfUserIsNotInPlaying()
     {
-        $user1 = User::create('user1');
-        $user2 = User::create('user2');
-
-        $game = Game::start($user1, $user2);
+        $game = Game::start(User::create('user1'), User::create('user2'));
 
         $this->expectException(UserNotPlayingException::class);
         $game->userMoves('fake_id', new Movement('right'));
-    }
-
-    public function testGameThrowsAnExceptionItIsFinished()
-    {
-        $user1 = User::create('user1');
-        $user2 = User::create('user2');
-
-        $game = Game::start($user1, $user2);
-
-        $game->end();
-
-        $this->expectException(GameIsFinishedException::class);
-        $game->userMoves($user1->id(), new Movement('left'));
     }
 
     public function testGameStartedHasNotAWinner()
@@ -79,5 +59,40 @@ class GameTest extends \PHPUnit\Framework\TestCase
         $game = Game::start(User::create('user1'), User::create('user2'));
 
         $this->assertNull($game->winner());
+    }
+
+    public function testGameIsPlayedUntilUserWinsRandomly()
+    {
+        $user1 = User::create('user1');
+        $user2 = User::create('user2');
+
+        $game = Game::start($user1, $user2);
+
+        while (!$game->isFinished()) {
+            $game->userMoves($user1->id(), new Movement('right'));
+        }
+
+        $this->assertNotNull($game->winner());
+        $this->assertInstanceOf(User::class, $game->winner());
+        $this->assertTrue($game->isFinished());
+    }
+
+    public function testGameThrowsAnExceptionIfIsFinished()
+    {
+        $user1 = User::create('user1');
+        $user2 = User::create('user2');
+
+        $game = Game::start($user1, $user2);
+
+        $count = 1;
+        $this->expectException(GameIsFinishedException::class);
+        while (true) {
+            if ($count % 2 != 0) {
+                $game->userMoves($user1->id(), new Movement('right'));
+            } else {
+                $game->userMoves($user2->id(), new Movement('right'));
+            }
+            $count++;
+        }
     }
 }

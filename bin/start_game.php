@@ -18,12 +18,12 @@ try {
         new FileGameRepository()
     );
 
-    $game = $service->execute(new StartGameBetweenTwoUsersRequest(
+    $gameStatusResponse = $service->execute(new StartGameBetweenTwoUsersRequest(
         $firstUserId,
         $secondUserId
     ));
 
-    echo "\nGAME STARTED - ID: " . $game->id();
+    echo "\nGAME STARTED - ID: " . $gameStatusResponse->gameId();
 
 } catch (Exception $exception) {
     echo "\nERROR: " . $exception->getMessage();

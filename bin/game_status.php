@@ -19,7 +19,7 @@ try {
 
     echo "\nGAME is " . ($gameStatusResponse->isFinished() ? 'finished' : 'playing');
     if ($gameStatusResponse->isFinished()) {
-        echo "\n Winner id is " . $gameStatusResponse->winnerId();
+        echo "\n Winner is " . $gameStatusResponse->winnerName() . ' - ' . $gameStatusResponse->winnerId();
     }
 
 } catch (Exception $exception) {

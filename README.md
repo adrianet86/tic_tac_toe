@@ -18,6 +18,7 @@
         
         docker run --rm -ti -v $PWD:/opt/project -w /opt/project devilbox/php-fpm-7.4 php vendor/bin/phpunit -c phpunit.xml
 
+
 ### Application commands
 
 Create user
@@ -39,6 +40,7 @@ User movement (any string as a movement is valid)
 Game Status
         
         docker run --rm -ti -v $PWD:/opt/project -w /opt/project  devilbox/php-fpm-7.4 php bin/game_status.php <game_id>
+
 
 ### Maintenance
 

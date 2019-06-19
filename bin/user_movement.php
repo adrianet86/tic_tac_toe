@@ -17,13 +17,17 @@ try {
         new FileGameRepository()
     );
 
-    $service->execute(new UserMovementInGameRequest(
+    $gameStatusResponse = $service->execute(new UserMovementInGameRequest(
         $userId,
         $gameId,
         $movement
     ));
 
     echo "\nMOVEMENT DONE!";
+
+    if ($gameStatusResponse->isFinished()) {
+        echo "\n Game finished! \nWinner is " . $gameStatusResponse->winnerName() . ' - ' . $gameStatusResponse->winnerId();
+    }
 
 } catch (Exception $exception) {
     echo "\nERROR: " . $exception->getMessage();

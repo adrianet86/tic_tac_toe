@@ -5,6 +5,7 @@ namespace Unit\TicTacToe\Application\Service\Game;
 
 
 use PHPUnit\Framework\TestCase;
+use TicTacToe\Application\Service\Game\GameStatusResponse;
 use TicTacToe\Application\Service\Game\StartGameBetweenTwoUsersRequest;
 use TicTacToe\Application\Service\Game\StartGameBetweenTwoUsersService;
 use TicTacToe\Domain\Game\Game;
@@ -36,10 +37,10 @@ class StartGameBetweenTwoUsersServiceTest extends TestCase
             $this->createMock(GameRepository::class)
         );
 
-        $game = $service->execute($request);
+        $gameStatusResponse = $service->execute($request);
 
-        $this->assertInstanceOf(Game::class, $game);
-        $this->assertFalse($game->isFinished());
+        $this->assertInstanceOf(GameStatusResponse::class, $gameStatusResponse);
+        $this->assertFalse($gameStatusResponse->isFinished());
     }
 
     public function testWhenAGameIsStartedItIsPersisted()

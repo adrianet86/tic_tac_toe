@@ -19,7 +19,7 @@ class StartGameBetweenTwoUsersService
         $this->gameRepository = $gameRepository;
     }
 
-    public function execute(StartGameBetweenTwoUsersRequest $request): Game
+    public function execute(StartGameBetweenTwoUsersRequest $request): GameStatusResponse
     {
         $firstUser = $this->userRepository->byId($request->firstUserId());
         $secondUser = $this->userRepository->byId($request->secondUserId());
@@ -28,6 +28,6 @@ class StartGameBetweenTwoUsersService
 
         $this->gameRepository->add($game);
 
-        return $game;
+        return GameStatusResponse::createFromGame($game);
     }
 }

@@ -16,12 +16,14 @@ class UserMovementInGameService
         $this->gameRepository = $gameRepository;
     }
 
-    public function execute(UserMovementInGameRequest $request)
+    public function execute(UserMovementInGameRequest $request): GameStatusResponse
     {
         $game = $this->gameRepository->byId($request->gameId());
 
         $game->userMoves($request->userId(), new Movement($request->movement()));
 
         $this->gameRepository->update($game);
+
+        return GameStatusResponse::createFromGame($game);
     }
 }
