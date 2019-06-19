@@ -33,8 +33,12 @@ Start game
         
     docker run --rm -ti -v $PWD:/opt/project -w /opt/project  devilbox/php-fpm-7.4 php bin/start_game.php <first_user_id> <second_user_id>
 
-User movement (any string as a movement is valid)
-        
+User movement 
+
+- Any string as a movement is valid)
+- User can win the game randomly after a movement
+
+    
     docker run --rm -ti -v $PWD:/opt/project -w /opt/project  devilbox/php-fpm-7.4 php bin/user_movement.php <user_id > <game_id> <movement>
 
 Game Status
