@@ -30,11 +30,9 @@ class GameTest extends \PHPUnit\Framework\TestCase
 
     public function testWhenAGameHasOnlyOneUserItThrowsAnException()
     {
-        $user1 = User::create('user1');
-
         $this->expectException(GameRequiresMoreUsersException::class);
 
-        Game::start($user1);
+        Game::start(User::create('user1'));
     }
 
     public function testUserMakesAMovement()
@@ -46,7 +44,7 @@ class GameTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($game->userMoves($user1->id(), new Movement('right')));
     }
 
-    public function testGameThrowsAnExceptionIfUserIsNotInPlaying()
+    public function testGameThrowsAnExceptionIfUserIsNotPlaying()
     {
         $game = Game::start(User::create('user1'), User::create('user2'));
 
@@ -80,19 +78,13 @@ class GameTest extends \PHPUnit\Framework\TestCase
     public function testGameThrowsAnExceptionIfIsFinished()
     {
         $user1 = User::create('user1');
-        $user2 = User::create('user2');
 
-        $game = Game::start($user1, $user2);
+        $game = Game::start($user1, User::create('user2'));
 
-        $count = 1;
         $this->expectException(GameIsFinishedException::class);
+
         while (true) {
-            if ($count % 2 != 0) {
-                $game->userMoves($user1->id(), new Movement('right'));
-            } else {
-                $game->userMoves($user2->id(), new Movement('right'));
-            }
-            $count++;
+            $game->userMoves($user1->id(), new Movement('right'));
         }
     }
 }
