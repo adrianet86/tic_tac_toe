@@ -2,16 +2,20 @@
 
 require dirname(__DIR__) . '/src/Kernel.php';
 
+use TicTacToe\Application\Service\User\DeleteUserRequest;
+use TicTacToe\Application\Service\User\DeleteUserService;
+use TicTacToe\Infrastructure\Persistence\File\User\FileUserRepository;
+
 
 try {
     $kernel = new Kernel();
-    $userId = $argv[1];
+    $userId = $argv[1] ? $argv[1] : '';
 
-    $service = new \TicTacToe\Application\Service\User\DeleteUserService(
-        new \TicTacToe\Infrastructure\Persistence\File\User\FileUserRepository()
+    $service = new DeleteUserService(
+        new FileUserRepository()
     );
 
-    $service->execute(new \TicTacToe\Application\Service\User\DeleteUserRequest(
+    $service->execute(new DeleteUserRequest(
         $userId
     ));
     echo "\nUSER DELETED";
