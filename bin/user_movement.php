@@ -26,7 +26,7 @@ try {
     echo "\nMOVEMENT DONE!";
 
     if ($gameStatusResponse->isFinished()) {
-        echo "\n Game finished! \nWinner is " . $gameStatusResponse->winnerName() . ' - ' . $gameStatusResponse->winnerId();
+        echo "\nGAME FINISHED! \nWINNER IS " . $gameStatusResponse->winnerName() . ' - ' . $gameStatusResponse->winnerId();
     }
 
 } catch (Exception $exception) {

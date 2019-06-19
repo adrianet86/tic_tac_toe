@@ -54,7 +54,7 @@ class FileGameRepository implements GameRepository
             return $this->games[$gameId];
         }
 
-        throw new GameNotFoundException('GAME NOT FOUND');
+        throw new GameNotFoundException('GAME NOT FOUND: ' . $gameId);
     }
 
     private function writeFile(): void

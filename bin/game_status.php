@@ -17,9 +17,9 @@ try {
 
     $gameStatusResponse = $service->execute(new GameStatusRequest($gameId));
 
-    echo "\nGAME is " . ($gameStatusResponse->isFinished() ? 'finished' : 'playing');
+    echo "\nGame " . ($gameStatusResponse->isFinished() ? 'finished' : 'playing');
     if ($gameStatusResponse->isFinished()) {
-        echo "\n Winner is " . $gameStatusResponse->winnerName() . ' - ' . $gameStatusResponse->winnerId();
+        echo "\nWinner is " . $gameStatusResponse->winnerName() . ' - ' . $gameStatusResponse->winnerId();
     }
 
 } catch (Exception $exception) {

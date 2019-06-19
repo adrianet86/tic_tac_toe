@@ -52,7 +52,7 @@ class FileUserRepository implements UserRepository
             return;
         }
 
-        throw new UserNotFoundException('USER NOT FOUND');
+        throw new UserNotFoundException('USER NOT FOUND' . $userId);
     }
 
     /**
@@ -66,7 +66,7 @@ class FileUserRepository implements UserRepository
             return $this->users[$userId];
         }
 
-        throw new UserNotFoundException('USER NOT FOUND');
+        throw new UserNotFoundException('USER NOT FOUND: ' . $userId);
     }
 
     private function writeFile(): void
