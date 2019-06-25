@@ -11,7 +11,7 @@ try {
     $kernel = new Kernel();
     $userId = $argv[1] ? $argv[1] : '';
     $gameId = $argv[2] ? $argv[2] : '';
-    $movement = $argv[3] ? $argv[3] : '';
+    $movement = $argv[3] ? $argv[3] : 0;
 
     $service = new UserMovementInGameService(
         new FileGameRepository()
@@ -23,11 +23,18 @@ try {
         $movement
     ));
 
-    echo "\nMOVEMENT DONE!";
+    echo "\nMovement done!";
+    echo "\n" . $gameStatusResponse->boardString();
 
     if ($gameStatusResponse->isFinished()) {
-        echo "\nGAME FINISHED! \nWINNER IS " . $gameStatusResponse->winnerName() . ' - ' . $gameStatusResponse->winnerId();
+        echo "\nGame finished!";
+        if ($gameStatusResponse->winnerId() != null) {
+            echo "\nWinner is " . $gameStatusResponse->winnerName() . ' - ' . $gameStatusResponse->winnerId();
+        } else {
+            echo "\nDraw";
+        }
     }
+
 
 } catch (Exception $exception) {
     echo "\nERROR: " . $exception->getMessage();

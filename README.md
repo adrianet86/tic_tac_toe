@@ -18,6 +18,13 @@
         
     docker run --rm -ti -v $PWD:/app -w /app devilbox/php-fpm-7.4 php vendor/bin/phpunit -c phpunit.xml
 
+### GamePlay
+Consider a board with nine fields numbered as follows:
+
+|1|2|3|
+|----------|------|------|
+|4|5|6|
+|7|8|9|
 
 ### Application commands
 
@@ -35,11 +42,8 @@ Start game
 
 User movement 
 
-- Any string as a movement is valid
-- User can win the game randomly after a movement
-
 ```
-docker run --rm -ti -v $PWD:/app -w /app devilbox/php-fpm-7.4 php bin/user_movement.php <user_id > <game_id> <movement>
+docker run --rm -ti -v $PWD:/app -w /app devilbox/php-fpm-7.4 php bin/user_movement.php <user_id > <game_id> <field>
 ```
 
 Game Status

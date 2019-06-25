@@ -8,9 +8,9 @@ class UserMovementInGameRequest
 {
     private string $userId;
     private string $gameId;
-    private string $movement;
+    private int $movement;
 
-    public function __construct(string $userId, string $gameId, string $movement)
+    public function __construct(string $userId, string $gameId, int $movement)
     {
         $this->userId = $userId;
         $this->gameId = $gameId;
@@ -27,7 +27,7 @@ class UserMovementInGameRequest
         return $this->gameId;
     }
 
-    public function movement(): string
+    public function movement(): int
     {
         return $this->movement;
     }

@@ -18,7 +18,7 @@ class UserMovementInGameServiceTest extends TestCase
     {
         $user = User::create('user1');
         $game = Game::start($user, User::create('user2'));
-        $movement = 'left';
+        $movement = 1;
 
         $request = new UserMovementInGameRequest(
             $user->id(),
@@ -45,7 +45,7 @@ class UserMovementInGameServiceTest extends TestCase
     {
         $user = User::create('user1');
         $game = Game::start($user, User::create('user2'));
-        $movement = 'left';
+        $movement = 1;
 
         $request = new UserMovementInGameRequest(
             $user->id(),

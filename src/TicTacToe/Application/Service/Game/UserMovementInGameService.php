@@ -5,7 +5,6 @@ namespace TicTacToe\Application\Service\Game;
 
 
 use TicTacToe\Domain\Game\GameRepository;
-use TicTacToe\Domain\Game\Movement;
 
 class UserMovementInGameService
 {
@@ -20,7 +19,7 @@ class UserMovementInGameService
     {
         $game = $this->gameRepository->byId($request->gameId());
 
-        $game->userMoves($request->userId(), new Movement($request->movement()));
+        $game->userMoves($request->userId(), $request->movement());
 
         $this->gameRepository->update($game);
 
