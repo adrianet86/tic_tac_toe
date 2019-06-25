@@ -13,7 +13,7 @@ class Game
     const HORIZONTAL_1 = [1, 2, 3];
     const HORIZONTAL_2 = [4, 5, 6];
     const HORIZONTAL_3 = [7, 8, 9];
-    const VERTICAL_1 = [1, 4, 6];
+    const VERTICAL_1 = [1, 4, 7];
     const VERTICAL_2 = [2, 5, 8];
     const VERTICAL_3 = [3, 6, 9];
     const DIAGONAL_1 = [5, 1, 9];
