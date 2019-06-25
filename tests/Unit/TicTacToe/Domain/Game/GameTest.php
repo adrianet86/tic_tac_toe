@@ -91,6 +91,8 @@ class GameTest extends \PHPUnit\Framework\TestCase
         $game->userMoves($user2->id(), 6);
         $game->userMoves($user1->id(), 9);
 
+        # TODO: should check all winner possibilities¿?
+
 
         $this->assertNotNull($game->winner());
         $this->assertEquals($user1, $game->winner());
