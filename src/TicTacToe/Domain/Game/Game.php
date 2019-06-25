@@ -10,6 +10,7 @@ use TicTacToe\Domain\User\User;
 class Game
 {
     const MAX_FIELDS = 9;
+
     const HORIZONTAL_1 = [1, 2, 3];
     const HORIZONTAL_2 = [4, 5, 6];
     const HORIZONTAL_3 = [7, 8, 9];
@@ -31,30 +32,27 @@ class Game
     ];
 
     private string $id;
+    private User $firstUser;
+    private User $secondUser;
     private array $board;
     private int $fieldsFilled;
     private bool $isFinished;
     private ?string $winnerId;
-    private User $firstUser;
-    private User $secondUser;
     private ?string $lastMovementUserId;
 
 
-    private function __construct()
+    private function __construct(User $firstUser, User $secondUser)
     {
         $this->id = Uuid::uuid4()->toString();
+        $this->firstUser = $firstUser;
+        $this->secondUser = $secondUser;
         $this->isFinished = false;
+        $this->fieldsFilled = 0;
         $this->winnerId = null;
         $this->lastMovementUserId = null;
-        $this->fieldsFilled = 0;
-        for ($i = 1; $i < 10; $i++) {
+        for ($i = 1; $i <= self::MAX_FIELDS; $i++) {
             $this->board[$i] = null;
         }
-    }
-
-    public function id(): string
-    {
-        return $this->id;
     }
 
     /**
@@ -64,16 +62,7 @@ class Game
      */
     public static function start(User $firstUser, User $secondUser): self
     {
-        $self = new self();
-        $self->firstUser = $firstUser;
-        $self->secondUser = $secondUser;
-
-        return $self;
-    }
-
-    public function isFinished(): bool
-    {
-        return $this->isFinished;
+        return new self($firstUser, $secondUser);
     }
 
     /**
@@ -89,9 +78,9 @@ class Game
     public function userMoves(string $userId, int $field): void
     {
         $this->assertIsNotFinished();
-        $this->assertValidField($field);
         $this->assertUserIsPlaying($userId);
         $this->assertUserTurn($userId);
+        $this->assertValidField($field);
         $this->assertFieldIsNotFilled($field);
 
         $this->board[$field] = $userId;
@@ -126,6 +115,11 @@ class Game
         return null;
     }
 
+    private function gameCanHaveWinner(): bool
+    {
+        return $this->fieldsFilled >= 5;
+    }
+
     /**
      * @param string $userId
      * @throws UserNotPlayingException
@@ -139,6 +133,22 @@ class Game
         throw new UserNotPlayingException('USER IS NOT PLAYING THIS GAME');
     }
 
+    /**
+     * @param string $userId
+     * @throws UserTurnException
+     */
+    private function assertUserTurn(string $userId): void
+    {
+        if ($this->lastMovementUserId == $userId) {
+            throw new UserTurnException('IS NOT YOUR TURN');
+        }
+
+        return;
+    }
+
+    /**
+     * @throws GameIsFinishedException
+     */
     private function assertIsNotFinished(): void
     {
         if ($this->isFinished) {
@@ -148,24 +158,17 @@ class Game
         return;
     }
 
-    public function winner(): ?User
+    /**
+     * @param int $field
+     * @throws InvalidFieldException
+     */
+    private function assertValidField(int $field): void
     {
-        if ($this->winnerId == $this->firstUser->id()) {
-            return $this->firstUser;
+        if ($field < 1 || $field > self::MAX_FIELDS) {
+            throw new InvalidFieldException('INVALID BOARD FIELD, ONLY FROM 1 TO 9 : ' . $field);
         }
 
-        if ($this->winnerId == $this->secondUser->id()) {
-            return $this->secondUser;
-        }
-
-        return null;
-    }
-
-    private function assertUserTurn(string $userId)
-    {
-        if ($this->lastMovementUserId == $userId) {
-            throw new UserTurnException('IS NOT YOUR TURN');
-        }
+        return;
     }
 
     /**
@@ -181,19 +184,27 @@ class Game
         return;
     }
 
-    /**
-     * @return bool
-     */
-    private function gameCanHaveWinner(): bool
+    public function id(): string
     {
-        return $this->fieldsFilled >= 5;
+        return $this->id;
     }
 
-    private function assertValidField(int $field)
+    public function isFinished(): bool
     {
-        if ($field < 1 || $field > self::MAX_FIELDS) {
-            throw new InvalidFieldException('INVALID BOARD FIELD, ONLY FROM 1 TO 9 : ' . $field);
+        return $this->isFinished;
+    }
+
+    public function winner(): ?User
+    {
+        if ($this->winnerId == $this->firstUser->id()) {
+            return $this->firstUser;
         }
+
+        if ($this->winnerId == $this->secondUser->id()) {
+            return $this->secondUser;
+        }
+
+        return null;
     }
 
     public function board(): array
