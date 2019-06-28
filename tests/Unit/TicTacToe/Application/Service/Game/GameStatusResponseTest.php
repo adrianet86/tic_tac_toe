@@ -29,14 +29,15 @@ class GameStatusResponseTest extends TestCase
     public function testWhenGameStatusResponseIsCreatedFromAGameObjectItHasAllDataParsed()
     {
         $game = Game::start(
-            User::create('user1'),
-            User::create('user2')
+            $user1 = User::create('user1'),
+            $user2 = User::create('user2')
         );
 
         $gameStatusResponse = GameStatusResponse::createFromGame($game);
 
-        $this->assertNull($gameStatusResponse->winnerId());
-        $this->assertNull($gameStatusResponse->winnerName());
+        $this->assertEmpty($gameStatusResponse->winner());
+        $this->assertEquals(['id' => $user1->id(), 'name' => $user1->name()], $gameStatusResponse->firstUser());
+        $this->assertEquals(['id' => $user2->id(), 'name' => $user2->name()], $gameStatusResponse->secondUser());
         $this->assertFalse($gameStatusResponse->isFinished());
     }
 
@@ -44,48 +45,9 @@ class GameStatusResponseTest extends TestCase
     {
         $gameStatusResponse = GameStatusResponse::createFromGame($this->gameFinished());
 
-        $this->assertIsString($gameStatusResponse->winnerId());
-        $this->assertIsString($gameStatusResponse->winnerName());
+        $this->assertNotEmpty($gameStatusResponse->winner());
+        $this->assertArrayHasKey('id', $gameStatusResponse->winner());
+        $this->assertArrayHasKey('name', $gameStatusResponse->winner());
         $this->assertTrue($gameStatusResponse->isFinished());
-    }
-
-    public function testBoardStringIsWellFormed()
-    {
-        $user1 = User::create('user1');
-        $user2 = User::create('user2');
-        $game = Game::start($user1, $user2);
-
-        $expectedBoardString =
-            "  |   |  \n"
-            .   "  |   |  \n"
-            .   "  |   |  \n"
-            .   "\n" . $user1->name() . ': x'
-            .   "\n" . $user2->name() . ': o'
-        ;
-        $gameStatusResponse = GameStatusResponse::createFromGame($game);
-        $this->assertEquals($expectedBoardString, $gameStatusResponse->boardString());
-
-        $expectedBoardString =
-             "x |   |  \n"
-            .   "  |   |  \n"
-            .   "  |   |  \n"
-            .   "\n" . $user1->name() . ': x'
-            .   "\n" . $user2->name() . ': o'
-        ;
-        $game->userMoves($user1->id(), 1);
-        $gameStatusResponse = GameStatusResponse::createFromGame($game);
-        $this->assertEquals($expectedBoardString, $gameStatusResponse->boardString());
-
-        $expectedBoardString =
-            "x |   |  \n"
-            .   "  | o |  \n"
-            .   "  |   |  \n"
-            .   "\n" . $user1->name() . ': x'
-            .   "\n" . $user2->name() . ': o'
-        ;
-        $game->userMoves($user2->id(), 5);
-        $gameStatusResponse = GameStatusResponse::createFromGame($game);
-        $this->assertEquals($expectedBoardString, $gameStatusResponse->boardString());
-
     }
 }

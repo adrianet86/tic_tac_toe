@@ -10,24 +10,32 @@ use TicTacToe\Domain\User\User;
 class GameStatusResponse
 {
     private string $gameId;
-    private ?string $winnerId;
-    private ?string $winnerName;
     private bool $isFinished;
     private array $board;
-    private string $boardString;
+    private array $firstUser;
+    private array $secondUser;
+    private array $winner;
 
     public static function createFromGame(Game $game): self
     {
         $self = new self();
         $self->gameId = $game->id();
-        $self->winnerId = null;
-        $self->winnerName = null;
+        $self->winner = [];
         $self->board = $game->board();
-        $self->setBoardToString($game);
+        $self->firstUser = [
+            'id' => $game->firstUser()->id(),
+            'name' => $game->firstUser()->name()
+        ];
+        $self->secondUser = [
+            'id' => $game->secondUser()->id(),
+            'name' => $game->secondUser()->name()
+        ];
 
         if ($game->winner() instanceof User) {
-            $self->winnerId = $game->winner()->id();
-            $self->winnerName = $game->winner()->name();
+            $self->winner = [
+                'id' => $game->winner()->id(),
+                'name' => $game->winner()->name()
+            ];
         }
 
         $self->isFinished = $game->isFinished();
@@ -35,19 +43,9 @@ class GameStatusResponse
         return $self;
     }
 
-    public function winnerId(): ?string
-    {
-        return $this->winnerId;
-    }
-
     public function isFinished(): bool
     {
         return $this->isFinished;
-    }
-
-    public function winnerName(): ?string
-    {
-        return $this->winnerName;
     }
 
     public function gameId(): string
@@ -55,39 +53,24 @@ class GameStatusResponse
         return $this->gameId;
     }
 
-    private function setBoardToString(Game $game): void
-    {
-        $this->boardString = '';
-        $tempBoard = [];
-        $parseIdToSymbol = [
-            $game->firstUser()->id() => 'x',
-            $game->secondUser()->id() => 'o',
-        ];
-        foreach ($game->board() as $field => $value) {
-            if (!is_null($value)) {
-                $tempBoard[$field] = $parseIdToSymbol[$value];
-            } else {
-                $tempBoard[$field] = ' ';
-            }
-
-        }
-
-        $this->boardString .= $tempBoard[1] . ' | ' . $tempBoard[2] . ' | ' . $tempBoard[3] . "\n";
-        $this->boardString .= $tempBoard[4] . ' | ' . $tempBoard[5] . ' | ' . $tempBoard[6] . "\n";
-        $this->boardString .= $tempBoard[7] . ' | ' . $tempBoard[8] . ' | ' . $tempBoard[9] . "\n";
-
-        $this->boardString .= "\n" . $game->firstUser()->name() . ': x';
-        $this->boardString .= "\n" . $game->secondUser()->name() . ': o';
-    }
-
     public function board(): array
     {
         return $this->board;
     }
 
-    public function boardString(): string
+    public function winner(): array
     {
-        return $this->boardString;
+        return $this->winner;
+    }
+
+    public function firstUser(): array
+    {
+        return $this->firstUser;
+    }
+
+    public function secondUser(): array
+    {
+        return $this->secondUser;
     }
 
 }

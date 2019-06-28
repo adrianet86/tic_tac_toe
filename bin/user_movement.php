@@ -5,6 +5,7 @@ require dirname(__DIR__) . '/src/Kernel.php';
 use TicTacToe\Application\Service\Game\UserMovementInGameRequest;
 use TicTacToe\Application\Service\Game\UserMovementInGameService;
 use TicTacToe\Infrastructure\Persistence\File\Game\FileGameRepository;
+use TicTacToe\Infrastructure\UI\Console\Command\PrintGameBoard;
 
 
 try {
@@ -24,12 +25,14 @@ try {
     ));
 
     echo "\nMovement done!";
-    echo "\n" . $gameStatusResponse->boardString();
+    echo "\n" . PrintGameBoard::print($gameStatusResponse);
 
     if ($gameStatusResponse->isFinished()) {
         echo "\nGame finished!";
-        if ($gameStatusResponse->winnerId() != null) {
-            echo "\nWinner is " . $gameStatusResponse->winnerName() . ' - ' . $gameStatusResponse->winnerId();
+        if (!empty($gameStatusResponse->winner())) {
+            echo "\nWinner is " . $gameStatusResponse->winner()['name']
+                . ' - '
+                . $gameStatusResponse->winner()['id'];
         } else {
             echo "\nDraw";
         }
